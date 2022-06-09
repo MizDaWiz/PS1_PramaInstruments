@@ -19,9 +19,9 @@ DS3232RTC myRTC;
 
 int LDRpin1 = A0;//for ldr
 int LDRpin2 = A1;
-int reading1 = 0;
-int reading2 = 0;
-int diff = 0;
+float reading1 = 0;
+float reading2 = 0;
+float diff = 0;
 int bright = 0;
 void setup()
 {
