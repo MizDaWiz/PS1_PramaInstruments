@@ -108,31 +108,37 @@ void loop()
     if (t != tLast) {
         tLast = t;
         //printDateTime(t);
-        if (second(t) == 0) {
-            float c = myRTC.temperature() / 4.;
-            float f = c * 9. / 5. + 32.;
-            Serial << F("  ") << c << F(" C  ") << f << F(" F");
-        }
-        Serial << endl;
+//        if (second(t) == 0) {
+//            float c = myRTC.temperature() / 4.;
+//            float f = c * 9. / 5. + 32.;
+//            Serial << F("  ") << c << F(" C  ") << f << F(" F");
+//        }
+//        Serial << endl;
     }
   //clock setup ends
 
-
+  int hr=hour();
   int mn=minute();
   int sc=second();
-  if(mn %20 ==0)//***********************Change sc to mn and change it to 20*****************
+  if(mn %2 ==0)//***********************Change sc to mn and change it to 20*****************
   {
    // read thr value from the LDR sensor
   reading1 = analogRead(LDRpin1);
   reading2 = analogRead(LDRpin2);
   // print the LDR sensor reading so you know its range
   diff=reading1-reading2;
-  printDateTime(t);
-  Serial.print(reading1 );
-  Serial.print("   " );
-  Serial.print(reading2);
-  Serial.print("    ");
-  Serial.println(diff);
+  //printDateTime(t);
+  //Serial.print(reading1 );
+  //Serial.print("   " );
+  //Serial.print(reading2);
+  //Serial.print("    ");
+  Serial.print(hr );
+//  Serial.print(",");
+  Serial.print(mn );
+//  Serial.print(",");
+  Serial.print(sc );
+//  Serial.print(",");  
+  Serial.print(diff);
  
  
     
