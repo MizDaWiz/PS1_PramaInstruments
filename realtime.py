@@ -6,11 +6,10 @@ fig=plt.figure()
 
 
 i=0
-time =list()
-ldr_diff=list()
-mpu_angle=list()
+x=list()
+y=list()
 i=0
-ser = serial.Serial('COM5',9600)
+ser = serial.Serial('COM5',115200)
 ser.close()
 ser.open()
 while True:

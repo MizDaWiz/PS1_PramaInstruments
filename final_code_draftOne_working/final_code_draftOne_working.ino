@@ -14,29 +14,19 @@
 #include <DS3232RTC.h>      // https://github.com/JChristensen/DS3232RTC
 #include <Streaming.h>      // https://github.com/janelia-arduino/Streaming
 
-byte Speed = 0; // Intialize Varaible for the speed of the motor (0-255);
-int RPWM = 10;  //connect Arduino pin 10 to IBT-2 pin RPWM
-int LPWM = 11;  //connect Arduino pin 11 to IBT-2 pin LPWM   //Linear Actuator
-
-
 
 DS3232RTC myRTC;
-int LA1=10;
-int LA2=11;
 
 int LDRpin1 = A0;//for ldr
 int LDRpin2 = A1;
 float reading1 = 0;
 float reading2 = 0;
 float diff = 0;
-
+int bright = 0;
 void setup()
 {
     pinMode(LDRpin1, INPUT);
     pinMode(LDRpin2, INPUT);
-    pinMode(LA1, OUTPUT); // Configure pin 10 as an Output
-    pinMode(LA2, OUTPUT); // Configure pin 11 as an Output
-
 
   
     Serial.begin(115200);
@@ -99,37 +89,6 @@ void loop()
         Serial << endl;
     }
   //clock setup ends
-
-// Extend Actuator at Full Speed
-  Speed = 255;
-  analogWrite(RPWM, 0);
-  analogWrite(LPWM, Speed);
-  
-  delay(2000); // 2 Seconds
-  
-  // Stop Actuator
-  analogWrite(RPWM, 0);
-  analogWrite(LPWM, 0);
-
-  delay(2000); // 2 Seconds
-
-  // Retract Actuator at Half Speed
-  Speed = 127;
-  analogWrite(RPWM, Speed);
-  analogWrite(LPWM, 0);
-  
-  delay(2000); // 2 Seconds
-  
-  // Stop Actuator
-  analogWrite(RPWM, 0);
-  analogWrite(LPWM, 0);
-
-  delay(2000); // 2 Seconds
-
-
-//Actuator Code Ends
-
-  
   int mn=minute();
   int sc=second();
   if(sc %5 ==0)//***********************Change sc to mn and change it to 20*****************
