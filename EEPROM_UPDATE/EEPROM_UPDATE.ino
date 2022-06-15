@@ -26,7 +26,7 @@ void loop() {
     0 to 1023 and each byte of the EEPROM can only hold a
     value from 0 to 255.
   ***/
-  int val = analogRead(0) / 4;
+  int val = analogRead(A0) / 4;
 
   /***
     Update the particular EEPROM cell.

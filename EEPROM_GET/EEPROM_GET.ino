@@ -28,7 +28,7 @@ void setup() {
 
   float f = 0.00f;   //Variable to store data read from EEPROM.
 
-  int eeAddress = 0; //EEPROM address to start reading from
+  int eeAddress = 100; //EEPROM address to start reading from
 
   Serial.begin(9600);
 
@@ -37,7 +37,8 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
 
   }
-
+//for (;eeAddress<1000;eeAddress+=1)
+//{
   Serial.print("Read float from EEPROM: ");
 
   //Get the float data from the EEPROM at position 'eeAddress'
@@ -45,7 +46,7 @@ void setup() {
   EEPROM.get(eeAddress, f);
 
   Serial.println(f, 3);    //This may print 'ovf, nan' if the data inside the EEPROM is not a valid float.
-
+//}
   /***
 
     As get also returns a reference to 'f', you can use it inline.
