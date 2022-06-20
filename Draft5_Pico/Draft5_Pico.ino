@@ -1,6 +1,10 @@
 #include <DS3232RTC.h>      // https://github.com/JChristensen/DS3232RTC
 #include <Streaming.h>      // https://github.com/janelia-arduino/Streaming
 DS3232RTC myRTC;
+#include <EEPROM.h>
+#include "Wire.h"
+#include "I2C_eeprom.h"
+I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC256);
 
 int LDRpin1 = A0;
 int LDRpin2 = A1;
@@ -11,6 +15,8 @@ int reading1 = 0;
 int reading2 = 0;
 int diff = 0;
 int mindiff=50;
+int address = 0;
+int maxaddress = 72;
 
 void printDateTime(time_t t)
 {
@@ -49,6 +55,7 @@ void printI00(int val, char delim)
 
 void setup()
 {
+    Wire.begin(); // initialise the connection
     pinMode(ENB, OUTPUT);
     pinMode(al1, OUTPUT); // Configure pin 10 as an Output
     pinMode(al2, OUTPUT); // Configure pin 11 as an Output
@@ -57,7 +64,7 @@ void setup()
     pinMode(LDRpin2, INPUT);
     Serial.begin(115200);
 
-     Serial << F( "\n" __FILE__ "\n" __DATE__ " " __TIME__ "\n" );
+//     Serial << F( "\n" _FILE_ "\n" _DATE_ " " _TIME_ "\n" );
     myRTC.begin();//clock setup
 
     // setSyncProvider() causes the Time library to synchronize with the
@@ -66,6 +73,7 @@ void setup()
     Serial << F("RTC Sync");
     if (timeStatus() != timeSet) Serial << F(" FAIL!");
     Serial << endl;
+    
 }
 
 void loop()
@@ -120,26 +128,35 @@ void loop()
   int hr=hour();
   int mn=minute();
   int sc=second();
-  if(mn %2 ==0)//***********************Change sc to mn and change it to 20*****************
+  if(mn %2 !=0)//********Change sc to mn and change it to 20******
   {
-   // read thr value from the LDR sensor
-  reading1 = analogRead(LDRpin1);
-  reading2 = analogRead(LDRpin2);
-  // print the LDR sensor reading so you know its range
-  diff=reading1-reading2;
-  //printDateTime(t);
-  Serial.print(reading1 );
-  Serial.print("   " );
-  Serial.print(reading2);
-  Serial.print("    ");
-  Serial.print(hr );
-  Serial.print(",");
-  Serial.print(mn );
-  Serial.print(",");
-  Serial.print(sc );
-  Serial.print(",");  
-  Serial.println(diff);
- 
+   
+  if(sc%20==0)
+ {
+  Serial.println("Starting recording...");
+   for(int address=0;address <=maxaddress;address++)
+   {
+      reading1 = analogRead(LDRpin1);
+      reading2 = analogRead(LDRpin2);
+      diff=reading1-reading2;
+      i2c_eeprom_write_page(0x57, 0, (byte *)diff, sizeof(diff));
+    
+    //EEPROM.update(address, diff); //EEPROM of Arduino Mega
+    //delay(15);
+    
+    Serial.print(address);
+//  Serial.print("\t");
+//  Serial.print(hr );
+// Serial.print("\t");
+//  Serial.print(mn );
+// Serial.print("\t");
+//  Serial.print(sc );
+ Serial.print("\t");  
+  Serial.print(diff);
+  Serial.println();
+  delay(20000);
+   }
+  }
  
     
   
@@ -178,5 +195,3 @@ void loop()
    }
 
 }
-
-  
