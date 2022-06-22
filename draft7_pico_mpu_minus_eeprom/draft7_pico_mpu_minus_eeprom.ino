@@ -128,10 +128,10 @@ void loop()
   int hr=hour();
   int mn=minute();
   int sc=second();
-  if(mn %2 !=0)//********Change sc to mn and change it to 20******
+  if(mn %2 !=0 || mn%2==0)//********Change sc to mn and change it to 20******
   {
    
-  if(sc%20==0)
+  if(sc%5==0)
  {
   Serial.println("Starting recording...");
    for(int address=0;address <=maxaddress;address++)
@@ -154,7 +154,7 @@ void loop()
  Serial.print("\t");  
   Serial.print(diff);
   Serial.println();
-  delay(20000);
+  delay(5000);
    }
   }
  
