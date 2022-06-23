@@ -12,7 +12,9 @@
 #include <Wire.h>
  
 // Define I2C Address - change if reqiuired
-const int i2c_addr = 0x3F;
+
+//const int i2c_addr = 0x3F;
+const int i2c_addr = 0x68;
  
 int gyro_x, gyro_y, gyro_z;
 long gyro_x_cal, gyro_y_cal, gyro_z_cal;
