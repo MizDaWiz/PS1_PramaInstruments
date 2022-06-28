@@ -1,5 +1,5 @@
 #include<Wire.h>
-const int MPU6050_addr=0x68;
+const int MPU6050_addr=0x57;
 int16_t AccX,AccY,AccZ,Temp,GyroX,GyroY,GyroZ;
 void setup(){
   Wire.begin();
@@ -14,13 +14,13 @@ void loop(){
   Wire.write(0x3B);
   Wire.endTransmission(false);
   Wire.requestFrom(MPU6050_addr,14,true);
-  AccX=Wire.read()<<8|Wire.read();
-  AccY=Wire.read()<<8|Wire.read();
-  AccZ=Wire.read()<<8|Wire.read();
-  Temp=Wire.read()<<8|Wire.read();
-  GyroX=Wire.read()<<8|Wire.read();
-  GyroY=Wire.read()<<8|Wire.read();
-  GyroZ=Wire.read()<<8|Wire.read();
+  AccX=Wire.read();//<<8|Wire.read();
+  AccY=Wire.read();//<<8|Wire.read();
+  AccZ=Wire.read();//<<8|Wire.read();
+  Temp=Wire.read();//<<8|Wire.read();
+  GyroX=Wire.read();//<<8|Wire.read();
+  GyroY=Wire.read();//<<8|Wire.read();
+  GyroZ=Wire.read();//<<8|Wire.read();
   Serial.print("AccX = "); Serial.print(AccX);
   Serial.print(" || AccY = "); Serial.print(AccY);
   Serial.print(" || AccZ = "); Serial.print(AccZ);
