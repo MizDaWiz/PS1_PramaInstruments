@@ -4,7 +4,7 @@ DS3232RTC myRTC;
 #include "I2C_eeprom.h"
 I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC256);
 
-
+int pot=xx;
 int address = 0;
 byte value;
 
@@ -88,6 +88,7 @@ void setup() {
     pinMode(ENB, OUTPUT);
     pinMode(al1, OUTPUT); // Configure pin 10 as an Output
     pinMode(al2, OUTPUT); // Configure pin 11 as an Output
+    pinMode(pot,INPUT);
     digitalWrite(ENB,HIGH);  ///for Actuator
     pinMode(LDRpin1, INPUT);
     pinMode(LDRpin2, INPUT);
@@ -102,6 +103,8 @@ void setup() {
 }
 
 void loop() {
+
+ int potreading=analogRead(pot);
   int hr=hour();
   int mn=minute();
   int sc=second();

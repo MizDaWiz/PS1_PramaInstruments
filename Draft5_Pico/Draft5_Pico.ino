@@ -109,7 +109,8 @@ void loop()
 //  
   if(abs(diff)>mindiff)
   {
-  if (diff> 0)
+  if (diff> 0)reading1 = analogRead(LDRpin1);
+        reading2 = analogRead(LDRpin2);
   {
     digitalWrite(al1,HIGH);
     digitalWrite(al2,LOW);
