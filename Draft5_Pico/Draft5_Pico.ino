@@ -107,15 +107,17 @@ void loop()
 // 
 //    
 //  
+reading1 = analogRead(LDRpin1);
+        reading2 = analogRead(LDRpin2);
+        diff=reading1-reading2;
   if(abs(diff)>mindiff)
   {
-  if (diff> 0)reading1 = analogRead(LDRpin1);
-        reading2 = analogRead(LDRpin2);
+  if (diff> 0)
   {
     digitalWrite(al1,HIGH);
     digitalWrite(al2,LOW);
   }
-  else
+    else
   {
     digitalWrite(al2,HIGH);
     digitalWrite(al1,LOW);
@@ -126,8 +128,8 @@ void loop()
      digitalWrite(al1,LOW);
     digitalWrite(al2,LOW);
     
-  }  }
-  
+  }  
+}
   //else
 //  {
 // 

@@ -1,4 +1,4 @@
-int pot=A2;
+int pot=28;
 int ENB=9;
 int al1=10;
 int al2=11;

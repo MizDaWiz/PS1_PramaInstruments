@@ -6,6 +6,10 @@ DS3232RTC myRTC;
 I2C_eeprom ee(0x50, I2C_DEVICESIZE_24LC256);
 
 int pot= 28;
+int potreadinglive=0;
+int potreading=0;
+ 
+int median=300;
 int address = 0;
 byte value;
 
@@ -23,54 +27,54 @@ int maxaddress = 72;
 
 
 // Function to read from EEPROM
-byte readEEPROM(int address, int i2c_address)
-{
-  // Define byte for received data
-  byte rcvData = 0xFF;
- 
-  // Begin transmission to I2C EEPROM
-  Wire.beginTransmission(i2c_address);
- 
-  // Send memory address as two 8-bit bytes
-  Wire.update((int)(address >> 8));   // MSB
-  Wire.update((int)(address & 0xFF)); // LSB
- 
-  // End the transmission
-  Wire.endTransmission();
- 
-  // Request one byte of data at current memory address
-  Wire.requestFrom(i2c_address, 1);
- 
-  // Read the data and assign to variable
-  rcvData =  Wire.read();
- 
-  // Return the data as function output
-  return rcvData;
+//byte readEEPROM(int address, int i2c_address)
+//{
+//  // Define byte for received data
+//  byte rcvData = 0xFF;
+// 
+//  // Begin transmission to I2C EEPROM
+//  Wire.beginTransmission(i2c_address);
+// 
+//  // Send memory address as two 8-bit bytes
+//  Wire.update((int)(address >> 8));   // MSB
+//  Wire.update((int)(address & 0xFF)); // LSB
+// 
+//  // End the transmission
+//  Wire.endTransmission();
+// 
+//  // Request one byte of data at current memory address
+//  Wire.requestFrom(i2c_address, 1);
+// 
+//  // Read the data and assign to variable
+//  rcvData =  Wire.read();
+// 
+//  // Return the data as function output
+//  return rcvData;
+//
+//
+//  delay(500);
+//}
 
 
-  delay(500);
-}
-
-
-void updateEEPROM(address,diff)
-{
-  i2c_eeprom_write_page(0x57, 0, (byte *)diff, sizeof(diff));
-  EEPROM.update(address, diff); 
-  Wire.beginTransmission(i2c_address);
- 
-  // Send memory address as two 8-bit bytes
-  Wire.update((int)(address >> 8));   // MSB
-  Wire.update((int)(address & 0xFF)); // LSB
- 
-  // Send data to be stored
-  Wire.update(potreadlive);
- 
-  // End the transmission
-  Wire.endTransmission();
- 
-  // Add 5ms delay for EEPROM
-  delay(5);
-}
+//void updateEEPROM(address,diff)
+//{
+//  i2c_eeprom_write_page(0x57, 0, (byte *)diff, sizeof(diff));
+//  EEPROM.update(address, diff); 
+//  Wire.beginTransmission(i2c_address);
+// 
+//  // Send memory address as two 8-bit bytes
+//  Wire.update((int)(address >> 8));   // MSB
+//  Wire.update((int)(address & 0xFF)); // LSB
+// 
+//  // Send data to be stored
+//  Wire.update(potreadlive);
+// 
+//  // End the transmission
+//  Wire.endTransmission();
+// 
+//  // Add 5ms delay for EEPROM
+//  delay(5);
+//}
 void printDigits(int digits)
 {
     // utility function for digital clock display: prints preceding colon and leading 0
@@ -124,7 +128,7 @@ void loop() {
   for (int address = 0; address <= maxaddress; address++) {
  
     
-    potreadinglive = analogRead(analogPin);
+    potreadinglive = analogRead(pot);
  
     // Write to the servo
     // Delay to allow servo to settle in position
@@ -156,7 +160,7 @@ void loop() {
     }
     delay(100);
     // Record the position in the external EEPROM
-    updateEEPROM(address , potreadinglive, EEPROM_I2C_ADDRESS);
+    //updateEEPROM(address , potreadinglive, EEPROM_I2C_ADDRESS);
  
     // Print to Serial Monitor
     Serial.print("ADDR = ");
@@ -188,9 +192,8 @@ void loop() {
   for (int address = 0; address <= maxaddress; address++) {
  
     // Read value from EEPROM
-    median = readEEPROM(address, EEPROM_I2C_ADDRESS);
- 
- 
+    //median = readEEPROM(address, EEPROM_I2C_ADDRESS);
+
     // Write to the servo
     // Delay to allow servo to settle in position
     // Convert value to integer for servo
