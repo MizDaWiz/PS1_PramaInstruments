@@ -20,10 +20,10 @@ int analogPin = 28;
 
 // Integer to hold potentiometer value
 int val = 0;
-
+byte val2;
 // Byte to hold data read from EEPROM
 int readVal = 0;
-
+byte readVal2=0;
 // Integer to hold number of addresses to fill
 int maxaddress = 10;
 
@@ -54,7 +54,7 @@ void writeEEPROM(int address, byte val, int i2c_address)
 byte readEEPROM(int address, int i2c_address)
 {
   // Define byte for received data
-  byte rcvData = 0xFF;
+  byte rcvData = 0;
 
   // Begin transmission to I2C EEPROM
   Wire.beginTransmission(i2c_address);
@@ -67,7 +67,7 @@ byte readEEPROM(int address, int i2c_address)
   Wire.endTransmission();
 
   // Request one byte of data at current memory address
-  Wire.requestFrom(i2c_address, 2);
+  Wire.requestFrom(i2c_address, 1);
 
   // Read the data and assign to variable
   rcvData =  Wire.read();
@@ -97,14 +97,14 @@ void setup()
 
     // Read pot and map to range of 0-180 for servo
     val = map(analogRead(analogPin), 0, 1023, 0, 200);
-
+val2=byte(val);
     // Write to the servo
     // Delay to allow servo to settle in position
   
     delay(15);
 
     // Record the position in the external EEPROM
-    writeEEPROM(address, val, EEPROM_I2C_ADDRESS);
+    writeEEPROM(address, val2, EEPROM_I2C_ADDRESS);
 
     // Print to Serial Monitor
     Serial.print("ADDR = ");
@@ -125,7 +125,7 @@ delay(1000);
 
   // Run until maximum address is reached
 
-  for (int address2 = 0; address2 <= maxaddress; address2++) {
+  for (int address2 = 0; address2 <= maxaddress; address2+=1) {
 
     // Read value from EEPROM
     readVal = readEEPROM(address2, EEPROM_I2C_ADDRESS);
