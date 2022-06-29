@@ -41,7 +41,7 @@ void writeEEPROM(int address, byte val, int i2c_address)
   Wire.write((int)(address & 0xFF)); // LSB
 
   // Send data to be stored
-  Wire.write(val);
+ Wire.write(val);
 
   // End the transmission
   Wire.endTransmission();
@@ -67,7 +67,7 @@ byte readEEPROM(int address, int i2c_address)
   Wire.endTransmission();
 
   // Request one byte of data at current memory address
-  Wire.requestFrom(i2c_address, 1);
+  Wire.requestFrom(i2c_address, 2);
 
   // Read the data and assign to variable
   rcvData =  Wire.read();
