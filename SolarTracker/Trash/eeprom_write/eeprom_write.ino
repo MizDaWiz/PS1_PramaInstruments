@@ -13,7 +13,7 @@
 
 
 // EEPROM I2C Address
-#define EEPROM_I2C_ADDRESS 0x51
+#define EEPROM_I2C_ADDRESS 0x50
 
 // Analog pin for potentiometer
 int analogPin = 28;
@@ -25,7 +25,7 @@ byte val2;
 int readVal = 0;
 byte readVal2=0;
 // Integer to hold number of addresses to fill
-int maxaddress = 10;
+int maxaddress = 1000;
 
 
 
@@ -93,7 +93,7 @@ void setup()
 
   // Run until maximum address is reached
 
-  for (int address = 0; address <= maxaddress; address++) {
+  for (int address = 980; address <= maxaddress; address++) {
 
     // Read pot and map to range of 0-180 for servo
     val = map(analogRead(analogPin), 0, 1023, 0, 200);
@@ -125,10 +125,10 @@ delay(1000);
 
   // Run until maximum address is reached
 
-  for (int address2 = 0; address2 <= maxaddress; address2+=1) {
+  for (int address = 980; address <= maxaddress; address+=1) {
 
     // Read value from EEPROM
-    readVal = readEEPROM(address2, EEPROM_I2C_ADDRESS);
+    readVal = readEEPROM(address, EEPROM_I2C_ADDRESS);
 
 
     // Write to the servo
@@ -139,7 +139,7 @@ delay(1000);
 
     // Print to Serial Monitor
     Serial.print("ADDR = ");
-    Serial.print(address2);
+    Serial.print(address);
     Serial.print("\t");
     Serial.println(readVal);
 
