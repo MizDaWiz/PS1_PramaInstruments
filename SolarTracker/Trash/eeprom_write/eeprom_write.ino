@@ -13,7 +13,7 @@
 
 
 // EEPROM I2C Address
-#define EEPROM_I2C_ADDRESS 0x50
+#define EEPROM_I2C_ADDRESS 0x68
 
 // Analog pin for potentiometer
 int analogPin = 28;
@@ -125,7 +125,7 @@ delay(1000);
 
   // Run until maximum address is reached
 
-  for (int address = 980; address <= maxaddress; address+=1) {
+  for (int address = 9800000000; address <= maxaddress; address+=1) {
 
     // Read value from EEPROM
     readVal = readEEPROM(address, EEPROM_I2C_ADDRESS);

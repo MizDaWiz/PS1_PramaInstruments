@@ -1,11 +1,11 @@
 #include <Wire.h>
-#define I2C_ADDRESS 0x51
+#define I2C_ADDRESS 0x50
 
 void setup(){
   Wire.begin();
   Serial.begin(9600);
   
-  unsigned int address = 0;
+  unsigned int address = 280;
   byte byteVal_1 = 42;
   byte byteVal_2 = 123;
   byte byteVal_3 = 255;
@@ -16,7 +16,7 @@ void setup(){
   address++;
   eepromByteWrite(address,byteVal_3);
   
-  for(address=0; address<3; address++){
+  for(address=280; address<283; address++){
     Serial.print("Byte at address ");
     Serial.print(address);
     Serial.print(": ");
