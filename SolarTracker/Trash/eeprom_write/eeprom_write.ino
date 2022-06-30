@@ -13,7 +13,7 @@
 
 
 // EEPROM I2C Address
-#define EEPROM_I2C_ADDRESS 0x68
+#define EEPROM_I2C_ADDRESS 0x50
 
 // Analog pin for potentiometer
 int analogPin = 28;
@@ -37,9 +37,9 @@ void writeEEPROM(int address, byte val, int i2c_address)
   Wire.beginTransmission(i2c_address);
 
   // Send memory address as two 8-bit bytes
-  Wire.write((int)(address >> 8));   // MSB
-  Wire.write((int)(address & 0xFF)); // LSB
-
+//  Wire.write((int)(address >> 8));   // MSB
+//  Wire.write((int)(address & 0xFF)); // LSB
+Wire.write(address);
   // Send data to be stored
  Wire.write(val);
 
@@ -60,8 +60,9 @@ byte readEEPROM(int address, int i2c_address)
   Wire.beginTransmission(i2c_address);
 
   // Send memory address as two 8-bit bytes
-  Wire.write((int)(address >> 8));   // MSB
-  Wire.write((int)(address & 0xFF)); // LSB
+//  Wire.write((int)(address >> 8));   // MSB
+//  Wire.write((int)(address & 0xFF)); // LSB
+Wire.write(address);
 
   // End the transmission
   Wire.endTransmission();
@@ -125,7 +126,7 @@ delay(1000);
 
   // Run until maximum address is reached
 
-  for (int address = 9800000000; address <= maxaddress; address+=1) {
+  for (int address = 980; address <= maxaddress; address+=1) {
 
     // Read value from EEPROM
     readVal = readEEPROM(address, EEPROM_I2C_ADDRESS);
