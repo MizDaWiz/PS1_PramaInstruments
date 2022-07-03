@@ -11,29 +11,35 @@ int al2=11;
 #define DEVICEADDRESS (0x51)
 #define EE24LC01MAXBYTES 1024/8
 #define SERIAL_DEBUG Serial
-byte TEST_ADDR =15;
-
+byte TEST_ADDR =0;
+byte add;
+int data;
 
 
 I2C_eeprom eeprom(DEVICEADDRESS, EE24LC01MAXBYTES);
-void readAndWriteVar(add,data) {
-    SERIAL_DEBUG.println("----------------------------------------------");
-    SERIAL_DEBUG.print("SINGLE BYTE: writing and retreiving EEPROM on I2C at address ");
-    SERIAL_DEBUG.println(DEVICEADDRESS);
-    SERIAL_DEBUG.println("----------------------------------------------");
+void readAndWriteVar(long add, byte data) {
+//    SERIAL_DEBUG.println("----------------------------------------------");
+//    SERIAL_DEBUG.print("SINGLE BYTE: writing and retreiving EEPROM on I2C at address ");
+//    SERIAL_DEBUG.println(DEVICEADDRESS);
+//    SERIAL_DEBUG.println("----------------------------------------------");
 
 //    byte curval = eeprom.readByte(TEST_ADDR);
 //    for(int data=10;TEST_ADDR <250;TEST_ADDR +=5,data+=10){
         eeprom.writeByte(add, data);
 //        }
 
-    SERIAL_DEBUG.print("updating to: ");
-    SERIAL_DEBUG.println(curval);
+    SERIAL_DEBUG.print(add);
+    SERIAL_DEBUG.print('\t');
+    SERIAL_DEBUG.print(data);
+    SERIAL_DEBUG.println('\t');
+    
+//    SERIAL_DEBUG.println(curval);
     delay(10);
 
-    curval = eeprom.readByte(TEST_ADDR);
-    SERIAL_DEBUG.print("new value: ");
-    SERIAL_DEBUG.println(curval);
+//    curval = eeprom.readByte(TEST_ADDR);
+//    SERIAL_DEBUG.print("new value: ");
+//    SERIAL_DEBUG.println(curval);
+    
 }
 
 byte readEEPROM(long eeaddress)
@@ -71,11 +77,11 @@ void setup() {
   SERIAL_DEBUG.println("WAIT FOR IT");
 
   eeprom.begin();
-  for(;TESTADDR<100;TESTADDR+=1)
+  for(;TEST_ADDR<100;TEST_ADDR+=1)
   {
-  int potreading=analogRead(pot);
+  int potreading=(analogRead(pot))/4;
   readAndWriteVar(TEST_ADDR,potreading);
-delay(5000);
+delay(500);
   }
   SERIAL_DEBUG.println("\nDone...");
 
@@ -93,10 +99,12 @@ void loop()
     for (long x = 0 ; x < 100 ; x++) //Read all 131,071 bytes from EERPOM
   {
     byte median = readEEPROM(x);
+    Serial.print(median);
+    Serial.print('\t');
     Serial.print(x);
     Serial.print('\t');
-    Serial.println(val);
-    int potreadinglive=analogRead(pot);
+    
+    int potreadinglive=(analogRead(pot))/4;
   Serial.println(potreadinglive);
   if (abs(potreadinglive-median)>10)
   {
