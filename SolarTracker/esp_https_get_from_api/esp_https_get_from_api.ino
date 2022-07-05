@@ -23,8 +23,8 @@ https://github.com/sakshamssy  */
 #include <WiFiClientSecure.h>
 
 //------- Replace the following! ------
-char ssid[] = "Rnd";         // your network SSID (name)
-char password[] = "12345678"; // your network key
+char ssid[] = "Galaxy M31s9DF6";         // your network SSID (name)
+char password[] = "ogzn5578"; // your network key
 char t[]="";
 // For Non-HTTPS requests
 // WiFiClient client;
@@ -72,7 +72,7 @@ void setup()
   // If you want to check the fingerprint
   client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
 //  client.setInsecure();  //for http
-  makeHTTPRequest("/apps/thinghttp/send_request?api_key=NT3TFKEXNIBK86SY");
+  makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
 }
 
 void makeHTTPRequest(char address[])
@@ -140,10 +140,10 @@ void loop()
 {
   Serial.println("New Reading:");
 //  client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
-//   makeHTTPRequest("/apps/thinghttp/send_request?api_key=NT3TFKEXNIBK86SY");
+makeHTTPRequest("/apps/thinghttp/send_request?api_key=NT3TFKEXNIBK86SY");
 //   client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
-//    makeHTTPRequest("apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
+  makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
 //   
-//   delay(2000);
+   delay(2000);
 //   
 }
