@@ -15,42 +15,42 @@ byte TEST_ADDR =15;
 
 
 
-I2C_eeprom eeprom(DEVICEADDRESS, EE24LC01MAXBYTES);
-void readAndWriteVar(add,data) {
-    SERIAL_DEBUG.println("----------------------------------------------");
-    SERIAL_DEBUG.print("SINGLE BYTE: writing and retreiving EEPROM on I2C at address ");
-    SERIAL_DEBUG.println(DEVICEADDRESS);
-    SERIAL_DEBUG.println("----------------------------------------------");
+//I2C_eeprom eeprom(DEVICEADDRESS, EE24LC01MAXBYTES);
+//void readAndWriteVar(add,data) {
+//    SERIAL_DEBUG.println("----------------------------------------------");
+//    SERIAL_DEBUG.print("SINGLE BYTE: writing and retreiving EEPROM on I2C at address ");
+//    SERIAL_DEBUG.println(DEVICEADDRESS);
+//    SERIAL_DEBUG.println("----------------------------------------------");
+//
+////    byte curval = eeprom.readByte(TEST_ADDR);
+////    for(int data=10;TEST_ADDR <250;TEST_ADDR +=5,data+=10){
+//        eeprom.writeByte(add, data);
+////        }
+//
+//    SERIAL_DEBUG.print("updating to: ");
+//    SERIAL_DEBUG.println(curval);
+//    delay(10);
+//
+//    curval = eeprom.readByte(TEST_ADDR);
+//    SERIAL_DEBUG.print("new value: ");
+//    SERIAL_DEBUG.println(curval);
+//}
 
-//    byte curval = eeprom.readByte(TEST_ADDR);
-//    for(int data=10;TEST_ADDR <250;TEST_ADDR +=5,data+=10){
-        eeprom.writeByte(add, data);
-//        }
-
-    SERIAL_DEBUG.print("updating to: ");
-    SERIAL_DEBUG.println(curval);
-    delay(10);
-
-    curval = eeprom.readByte(TEST_ADDR);
-    SERIAL_DEBUG.print("new value: ");
-    SERIAL_DEBUG.println(curval);
-}
-
-byte readEEPROM(long eeaddress)
-{
-  Wire.beginTransmission(EEPROM_ADR);
-Wire.write(eeaddress);
-//  Wire.write((int)(eeaddress >> 8)); // MSB
-//  Wire.write((int)(eeaddress & 0xFF)); // LSB
-  Wire.endTransmission();
-
-  Wire.requestFrom(EEPROM_ADR, 1);
-
-  byte rdata = 0xFF;
-  if (Wire.available()) rdata = Wire.read();
-  return rdata;
-}
-
+//byte readEEPROM(long eeaddress)
+//{
+//  Wire.beginTransmission(EEPROM_ADR);
+//Wire.write(eeaddress);
+////  Wire.write((int)(eeaddress >> 8)); // MSB
+////  Wire.write((int)(eeaddress & 0xFF)); // LSB
+//  Wire.endTransmission();
+//
+//  Wire.requestFrom(EEPROM_ADR, 1);
+//
+//  byte rdata = 0xFF;
+//  if (Wire.available()) rdata = Wire.read();
+//  return rdata;
+//}
+//
 
 
 void setup() {
@@ -64,20 +64,20 @@ void setup() {
 
     
     
-// SERIAL_DEBUG.begin(115200);
-  while (!SERIAL_DEBUG); // wait for SERIAL_DEBUG port to connect. Needed for Leonardo only
-
-  SERIAL_DEBUG.println("IT IS BEGINNING");
-  SERIAL_DEBUG.println("WAIT FOR IT");
-
-  eeprom.begin();
-  for(;TESTADDR<100;TESTADDR+=1)
-  {
-  int potreading=analogRead(pot);
-  readAndWriteVar(TEST_ADDR,potreading);
-delay(5000);
-  }
-  SERIAL_DEBUG.println("\nDone...");
+SERIAL_DEBUG.begin(115200);
+//  while (!SERIAL_DEBUG); // wait for SERIAL_DEBUG port to connect. Needed for Leonardo only
+//
+//  SERIAL_DEBUG.println("IT IS BEGINNING");
+//  SERIAL_DEBUG.println("WAIT FOR IT");
+//
+//  eeprom.begin();
+//  for(;TESTADDR<100;TESTADDR+=1)
+//  {
+//  int potreading=analogRead(pot);
+//  readAndWriteVar(TEST_ADDR,potreading);
+//delay(5000);
+//  }
+//  SERIAL_DEBUG.println("\nDone...");
 
 
     
@@ -92,10 +92,11 @@ void loop()
   //reading eeprom
     for (long x = 0 ; x < 100 ; x++) //Read all 131,071 bytes from EERPOM
   {
-    byte median = readEEPROM(x);
+    int median=200;
+//    byte median = readEEPROM(x);
     Serial.print(x);
     Serial.print('\t');
-    Serial.println(val);
+//    Serial.println(val);
     int potreadinglive=analogRead(pot);
   Serial.println(potreadinglive);
   if (abs(potreadinglive-median)>10)

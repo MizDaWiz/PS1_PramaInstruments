@@ -8,12 +8,12 @@ DS3232RTC myRTC;
 #define DEVICEADDRESS (0x51)
 #define EE24LC01MAXBYTES 1024/8
 
-byte TEST_ADDR =0;
+byte TEST_ADDR =100;
 byte add;
 int data;
 
 I2C_eeprom eeprom(DEVICEADDRESS, EE24LC01MAXBYTES);
-
+int counter=0;
 int pot=28;
 int address = 0;
 byte value;
@@ -28,7 +28,31 @@ int reading2 = 0;
 int diff = 0;
 int mindiff=50;
 //int maxaddress = 72;
+void calibMode()
+{
 
+
+    // SERIAL_DEBUG.begin(115200);
+  while (!Serial); // wait for SERIAL_DEBUG port to connect. Needed for Leonardo only
+
+  Serial.println("IT IS BEGINNING");
+  Serial.println("WAIT FOR IT");
+
+  eeprom.begin();
+  for(;TEST_ADDR<160;TEST_ADDR+=4)
+  {
+  int potreading=(analogRead(pot))/4;
+  readAndWriteVar(TEST_ADDR,potreading);
+  delay(500);
+  readAndWriteVar(TEST_ADDR+1,minute());//change it to hour later
+  delay(500);
+  readAndWriteVar(TEST_ADDR+2,second());//change it to min later
+delay(2000);
+
+  }
+  Serial.println("\nDone...");
+  
+}
 void readAndWriteVar(long add, byte data) {
 
         eeprom.writeByte(add, data);
@@ -88,36 +112,26 @@ delay(2000);
     else
         Serial.println("RTC has set the system time");
 
-int hr=hour();
-  int mn=minute();
-  int sc=second();
+        
 
-    // SERIAL_DEBUG.begin(115200);
-  while (!Serial); // wait for SERIAL_DEBUG port to connect. Needed for Leonardo only
 
-  Serial.println("IT IS BEGINNING");
-  Serial.println("WAIT FOR IT");
-
-  eeprom.begin();
-  for(;TEST_ADDR<80;TEST_ADDR+=4)
-  {
-  int potreading=(analogRead(pot))/4;
-  readAndWriteVar(TEST_ADDR,potreading);
-//  readAndWriteVar(TEST_ADDR+1,hr);
-//  readAndWriteVar(TEST_ADDR+1,mn);
-delay(2000);
-
-  }
-  Serial.println("\nDone...");
         
 }
 
 void loop() {
+
+if(counter==0)
+{
+  calibMode();
+  counter+=1;
+}
+  else{
+     Serial.println("Starting else");
  //Start the I2C Library
   Wire.begin();
   Wire.setClock(400000);
   //reading eeprom
- for (long x = 0 ; x < 100 ; x++) //Read all 131,071 bytes from EERPOM
+ for (long x = 100 ; x < 160 ; x+=4) //Read all 131,071 bytes from EERPOM
   {
     byte median = readEEPROM(x);
     Serial.print(median);
@@ -183,4 +197,4 @@ void loop() {
           delay(2000);
     }
   }
-}
+}}
