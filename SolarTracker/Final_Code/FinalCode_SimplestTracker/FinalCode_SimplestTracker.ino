@@ -50,7 +50,7 @@ void loop()
         digitalWrite(al2,LOW);
         Serial.println("No need to optimise");
       }
-      delay(delay_20min);
+      
  }
 
 
