@@ -17,6 +17,8 @@ int data;
 int address = 0;
 long delay_20min=1200000;
 long delay_20sec=20000;
+int hour_start=5; //5 am
+int hour_end=20;  //8 pm
 int counter=0;//Counter set to zero for calibration to be done once
 byte value;
 
@@ -32,7 +34,8 @@ int reading1 = 0;
 int reading2 = 0; //FOr storing LDR readings
 int diff = 0; //difference between the readings of both LDRs
 int mindiff=10;// This is the minimum accepted difference between the LDR readings
-            
+  /*  Keep the mindiff value larger for less noise in the range of 25 to 35
+    But keep it as small as possible for better precision    */    
             
 void calibMode() //Calibration Mode //Reads data and stores into EEPROM
 {
@@ -53,18 +56,18 @@ void calibMode() //Calibration Mode //Reads data and stores into EEPROM
   Serial.print(second());
   
   eeprom.begin();
-  for(;addr<maxaddr;addr+=4)
+  for(;addr<max_addr;addr+=4)
   {
-  Serial.println("Reading at:\t");
-  int potreading=(analogRead(pot))/4;
-  writeEEPROM(addr,hour());
-  delay(500);
-  writeEEPROM(addr+1,min());//change it to hour later
-  delay(500);
-  writeEEPROM(addr+2,potreading);//change it to min later
-
-  delay(delay_20min); //Used while Actual Usage of Tracker
-  //delay(delay_20sec);//Used For Testing on Scaled down time of 20 second rather than 20 minutes
+    Serial.println("Reading at:\t");
+    int potreading=(analogRead(pot))/4;
+    writeEEPROM(addr,hour());
+    delay(500);
+    writeEEPROM(addr+1,minute());
+    delay(500);
+    writeEEPROM(addr+2,potreading);
+  
+    delay(delay_20min); //Used while Actual Usage of Tracker
+    //delay(delay_20sec);//Used For Testing on Scaled down time of 20 second rather than 20 minutes
 
   }
   Serial.println("\nCalibration Done");
@@ -140,14 +143,22 @@ void loop()
       Serial.print('\t');
       Serial.print(x);
       Serial.print('\t');
-      if(hour()<=5 && hour()>=20)//For Night MOde and For Homing Purposes
+      if(hour()<=hour_start && hour()>=hour_end)//For Night MOde and For Homing Purposes
       {
         Serial.println("Night Mode");
         Serial.println("Homing Initiated");
-        if(hour==20 && min==1)
+        if(hour()==hour_end && minute()==1)
         {
-          digitalWrite(al1,HIGH);
-          digitalWrite(al1,HIGH);
+          if(second()<8)
+          {
+            digitalWrite(al1,HIGH);
+            digitalWrite(al2,LOW);
+            Serial.println("Sleeping and Homing");
+          }
+          else
+          {
+            Serial.println("Sleeping");
+          }
         }
       }
       else
