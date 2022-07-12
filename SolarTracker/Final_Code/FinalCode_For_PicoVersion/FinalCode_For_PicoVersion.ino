@@ -9,7 +9,7 @@ DS3232RTC myRTC;      //FOr RTC Module
 I2C_eeprom eeprom(EEPROM_ADR, EE24LC01MAXBYTES);    //Initialize EEPROM connection using I2C protocol
 byte addr =25; //Start Address to write ON EEPROM
 byte addr_Read =25; //Start Address to read from EEPROM
-byte max_addr=addr+288;//360=24 hours* 3 reading per hour * 4 bytes per reading
+byte max_addr=addr+288;//288=24 hours* 3 reading per hour * 4 bytes per reading
 //Given an arbitrary value so that we can keep it changing while testing to prevent overwriting same bit very frequently.
 
 byte add;    //variable to store address to keep running in loop
