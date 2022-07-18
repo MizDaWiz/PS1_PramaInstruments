@@ -7,18 +7,21 @@ DS3232RTC myRTC;      //FOr RTC Module
 #define EEPROM_ADR 0x51   // the address of your EEPROM
 #define EE24LC01MAXBYTES 1024
 I2C_eeprom eeprom(EEPROM_ADR, EE24LC01MAXBYTES);    //Initialize EEPROM connection using I2C protocol
-byte addr =25; //Start Address to write ON EEPROM
-byte addr_Read =25; //Start Address to read from EEPROM
-byte max_addr=addr+288;//288=24 hours* 3 reading per hour * 4 bytes per reading
+byte addr =125; //Start Address to write ON EEPROM
+byte addr_Read =125; //Start Address to read from EEPROM
+byte max_addr=addr+50;//288=24 hours* 3 reading per hour * 4 bytes per reading
+//50 for testing
 //Given an arbitrary value so that we can keep it changing while testing to prevent overwriting same bit very frequently.
 
 byte add;    //variable to store address to keep running in loop
 int data;
 int address = 0;
 long delay_20min=1200000;
-long delay_20sec=20000;
-int hour_start=5; //5 am
-int hour_end=20;  //8 pm
+long delay_20sec=10000;
+//int hour_start=0; //5 am
+//int hour_end=1;  //8 pm
+int min_start=4;
+int min_end=3;
 int counter=0;//Counter set to zero for calibration to be done once
 byte value;
 int comparator;
@@ -65,7 +68,7 @@ int LDR_calib()
         return 1;
       }
       return 0;      
-}           
+}
 void calibMode() //Calibration Mode //Reads data and stores into EEPROM
 {
    
@@ -100,8 +103,8 @@ void calibMode() //Calibration Mode //Reads data and stores into EEPROM
     delay(500);
     writeEEPROM(addr+2,potreading);
   addr+=4;
-    delay(delay_20min); //Used while Actual Usage of Tracker
-    //delay(delay_20sec);//Used For Testing on Scaled down time of 20 second rather than 20 minutes
+    //delay(delay_20min); //Used while Actual Usage of Tracker
+    delay(delay_20sec);//Used For Testing on Scaled down time of 20 second rather than 20 minutes
   }
   }
   Serial.println("\nCalibration Done");
@@ -179,21 +182,23 @@ void loop()
       Serial.print('\t');
       Serial.print(x);
       Serial.print('\t');
-      if(hour()< hour_start && hour()>=hour_end)//For Night MOde and For Homing Purposes
+      if(minute()<=min_start && minute()>=min_end)//For Night MOde and For Homing Purposes
       {
         Serial.println("Night Mode");
         Serial.println("Homing Initiated");
-        if(hour()==hour_end && minute()==1)
+        if(minute()==min_end)
         {
-          if(second()<8)
+          if(second()<20)
           {
             digitalWrite(al1,HIGH);
             digitalWrite(al2,LOW);
             Serial.println("Sleeping and Homing");
+         
           }
           else
           {
             Serial.println("Sleeping");
+            delay(1000);
           }
         }
       }
@@ -201,15 +206,15 @@ void loop()
       {
         int potreadinglive=(analogRead(pot))/4;
         Serial.println(potreadinglive);
-        if (abs(potreadinglive-median)>mindiff)
+        if (abs(potreadinglive-comparator)>mindiff)
           {
-          if ((potreadinglive-median)>0)
+          if ((potreadinglive-comparator)>0)
               {
                 digitalWrite(al1,HIGH);
                 digitalWrite(al2,LOW);
                 Serial.println("up");
               }
-              else if((potreadinglive-median)<0)
+              else if((potreadinglive-comparator)<0)
               {
                 digitalWrite(al1,LOW);
                 digitalWrite(al2,HIGH);
@@ -222,7 +227,8 @@ void loop()
               digitalWrite(al2,LOW);
               Serial.println("No need to optimise");
             }
-            delay(delay_20min);
+            //delay(delay_20min);
+            delay(delay_20sec);
        }
 
     }

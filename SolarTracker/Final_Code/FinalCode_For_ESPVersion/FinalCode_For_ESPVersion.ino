@@ -15,6 +15,7 @@
  *******************************************************************/
 /*Updated for personal use by Saksham Yadav
 https://github.com/sakshamssy  */
+
 // ----------------------------
 // Standard Libraries
 // ----------------------------
@@ -75,14 +76,14 @@ void setup()
   makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
 }
 
-void makeHTTPRequest(char address[])
+float makeHTTPRequest(char address[])
 {
 
   // Opening connection to server (Use 80 as port if HTTP,443 if https)
   if (!client.connect(TEST_HOST, 443))
   {
     Serial.println(F("Connection failed"));
-    return;
+    return 0;
   }
 
   // give the esp a breather
@@ -106,7 +107,7 @@ void makeHTTPRequest(char address[])
   if (client.println() == 0)
   {
     Serial.println(F("Failed to send request"));
-    return;
+    return 0;
   }
   //delay(100);
   // Check HTTP status
@@ -119,31 +120,43 @@ void makeHTTPRequest(char address[])
   if (!client.find(endOfHeaders))
   {
     Serial.println(F("Invalid response"));
-    return;
+    return 0;
   }
 
   // While the client is still availble read each
   // byte and print to the serial monitor
+  int i=0;
   while (client.available())
   {
     char c = 0;
-    
     client.readBytes(&c, 1);
-    char t=t+c;
-    Serial.print(c);
+   t[i]=c;
+    //Serial.print(c);
+    i=i+1;
   }
-  Serial.print('\n');
-//  Serial.println(t);
+  for(int j=0;j<=strlen(t);j++)
+  {
+    if (!(t[i]<58 && t[i]>46))
+    {
+      t[i]='\0';
+    }
+  }
+//Serial.print('\n');
+   float val;
+   char str[4];
+   
+   strcpy(str, t);
+   val = atof(str);
+return val;
 }
 //apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6
 void loop()
 {
   Serial.println("New Reading:");
-//  client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
-makeHTTPRequest("/apps/thinghttp/send_request?api_key=NT3TFKEXNIBK86SY");
-//   client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
-  makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
-//   
+
+//makeHTTPRequest("/apps/thinghttp/send_request?api_key=NT3TFKEXNIBK86SY");
+  float m=makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
+    Serial.println(m);//m here is the Solar Altitude 
    delay(2000);
-//   
+//Pseudo  
 }
