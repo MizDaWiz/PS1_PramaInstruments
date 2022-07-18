@@ -22,13 +22,13 @@
    Note that X and Y are tilt angles and not pitch/roll.
 
    License: MIT
-  //*/
-int ENB = 20; //For Enable Pin of Motor Driver
+//*/
+int ENB =20; //For Enable Pin of Motor Driver
 int al1 = 21; //For Motor Driver Input Pin1
 int al2 = 22; //For Motor Driver Input Pin2
-#include "Wire.h"
-#include <MPU6050_light.h>
-MPU6050 mpu(Wire);
+//#include "Wire.h"
+//#include <MPU6050_light.h>
+//MPU6050 mpu(Wire);
 
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
@@ -38,7 +38,6 @@ char password[] = "ogzn5578"; // your network key
 float mindiff = 1;
 float diff;
 char t[] = "";
-long delay_10mins=600000;
 // For Non-HTTPS requests
 // WiFiClient client;
 
@@ -54,7 +53,7 @@ WiFiClientSecure client;
 
 void setup()
 {
-
+ 
   Serial.begin(115200);
 
   // Connect to the WiFI
@@ -76,7 +75,7 @@ void setup()
   Serial.println("IP address: ");
   IPAddress ip = WiFi.localIP();
   Serial.println(ip);
-  pinMode(ENB, OUTPUT);
+ pinMode(ENB, OUTPUT);
   pinMode(al1, OUTPUT); // Configure pin 10 as an Output
   pinMode(al2, OUTPUT); // Configure pin 11 as an Output
   digitalWrite(ENB, HIGH); ///for Actuator
@@ -92,17 +91,17 @@ void setup()
 
 
   //MPU6050 setup
-  Wire.begin();
-
-  byte status = mpu.begin();
-  Serial.print(F("MPU6050 status: "));
-  Serial.println(status);
-  while (status != 0) { } // stop everything if could not connect to MPU6050
-
-  Serial.println(F("Calculating offsets, do not move MPU6050"));
-  delay(1000);
-  mpu.calcOffsets(true, true); // gyro and accelero
-  Serial.println("Done!\n");
+//  Wire.begin();
+//
+//  byte status = mpu.begin();
+//  Serial.print(F("MPU6050 status: "));
+//  Serial.println(status);
+//  while (status != 0) { } // stop everything if could not connect to MPU6050
+//
+//  Serial.println(F("Calculating offsets, do not move MPU6050"));
+//  delay(1000);
+//  mpu.calcOffsets(true, true); // gyro and accelero
+//  Serial.println("Done!\n");
 
 }
 
@@ -188,11 +187,11 @@ void loop()
   float m = makeHTTPRequest("/apps/thinghttp/send_request?api_key=DI3UPIO33ATKCCW6");
   Serial.println(m);//m here is the Solar Altitude
   delay(2000);
-  mpu.update();
-  float z = mpu.getAngleZ();
-  Serial.print("\tZ: "); Serial.println(mpu.getAngleZ());
-  //float z=Serial.parseFloat();
-  Serial.print("\tZ: "); Serial.println(z);
+//  mpu.update();
+//  float z = mpu.getAngleZ();
+//  Serial.print("\tZ: "); Serial.println(mpu.getAngleZ());
+float z=Serial.parseFloat();
+Serial.print("\tZ: ");Serial.println(z);
   diff = m - z;
 
   if (abs(diff) > mindiff)
@@ -216,5 +215,5 @@ void loop()
     digitalWrite(al2, LOW);
     Serial.println("No need to optimise");
   }
-  delay(delay_10mins);
+
 }
