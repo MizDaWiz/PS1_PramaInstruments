@@ -1,5 +1,5 @@
 # PS1_PramaInstruments
-My PS1 \n
+My PS1 '\n'
 From 30th May,2022 to 22nd July,2022
 Practice School Term 
 Work done for Prama Instruments Pvt Ltd.,Rabale
