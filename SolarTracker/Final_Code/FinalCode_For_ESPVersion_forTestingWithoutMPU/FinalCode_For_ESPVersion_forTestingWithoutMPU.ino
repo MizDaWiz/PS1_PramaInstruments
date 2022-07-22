@@ -48,7 +48,7 @@ WiFiClientSecure client;
 
 #define TEST_HOST "api.thingspeak.com"
 // OPTIONAL - The finferprint of the site you want to connect to.
-#define TEST_HOST_FINGERPRINT "271892dda426c30709b97ae6c521b95b48f716e1"
+#define TEST_HOST_FINGERPRINT "5d4e3e0b017dfc607f2557f5a2f0f189853a95b5"
 // The finger print will change every few months.
 
 void setup()
@@ -82,7 +82,7 @@ void setup()
   //--------
 
   // If you don't need to check the fingerprint
-  // client.setInsecure();
+//   client.setInsecure();
 
   // If you want to check the fingerprint
   client.setFingerprint(TEST_HOST_FINGERPRINT); //for https
