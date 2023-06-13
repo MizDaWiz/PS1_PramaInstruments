@@ -10,8 +10,8 @@ Firstly, We worked on making three different prototypes for the commercial Solar
 Secondly, We built an Occupancy Sensor for conserving electric energy using a Tensor Flow Lite Object Detection model operated on a Raspberry Pi 4.
 
 Members:
-Abhinav Srivastava
-Atharva Deshmukh
-Aakanksha Dasmohapatra
-Mizaan Kanadia
-Saksham Yadav
+* Abhinav Srivastava
+* Atharva Deshmukh
+* Aakanksha Dasmohapatra
+* Mizaan Kanadia
+* Saksham Yadav
